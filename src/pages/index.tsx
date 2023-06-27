@@ -6,7 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { LoadingPage } from "~/components/loading";
+import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { api, type RouterOutputs } from "~/utils/api";
 
 dayjs.extend(relativeTime);
@@ -49,8 +49,22 @@ const CreatePostWizard = () => {
         value={input}
         type="text"
         disabled={isPosting}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input === "") return;
+            mutate({ content: input });
+          }
+        }}
       />
-      <button onClick={() => mutate({ content: input })}>Post</button>
+      {input !== "" && !isPosting && (
+        <button onClick={() => mutate({ content: input })}>Post</button>
+      )}
+      {isPosting && (
+        <div className="flex items-center justify-center">
+          <LoadingSpinner size={30} />
+        </div>
+      )}
     </div>
   );
 };
