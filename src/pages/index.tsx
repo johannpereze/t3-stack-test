@@ -5,6 +5,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { LoadingPage } from "~/components/loading";
 import { api, type RouterOutputs } from "~/utils/api";
 
@@ -20,6 +21,14 @@ const CreatePostWizard = () => {
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
+    },
+    onError(err) {
+      const errorMessage = err.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Something went wrong");
+      }
     },
   });
 
