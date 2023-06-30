@@ -2,6 +2,25 @@ import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { api } from "~/utils/api";
 
+interface ProfilePageProps {
+  userId: string;
+}
+const ProfileFeed = ({ userId }: ProfilePageProps) => {
+  const { data, isLoading } = api.posts.getPostsByUserId.useQuery({ userId });
+
+  if (isLoading) return <LoadingPage />;
+
+  if (!data || data.length === 0) return <div>User has not posted</div>;
+
+  return (
+    <div className="flex flex-col">
+      {data.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost.post.id} />
+      ))}
+    </div>
+  );
+};
+
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   console.log("🚀 ~ file: [slug].tsx:6 ~ username:", username);
   const { data } = api.profile.getUserByUsername.useQuery({
@@ -30,6 +49,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
           data.username || ""
         }`}</div>
         <div className="w-full border-b border-slate-400"></div>
+        <ProfileFeed userId={data.id} />
       </PageLayout>
     </>
   );
@@ -39,6 +59,8 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import Image from "next/image";
 import superjson from "superjson";
 import { PageLayout } from "~/components/layout";
+import { LoadingPage } from "~/components/loading";
+import { PostView } from "~/components/postVIew";
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 
