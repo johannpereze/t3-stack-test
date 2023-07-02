@@ -21,5 +21,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  /* This is done in GitHub actions so is unnecessary in vercel */
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  swcMinify: true,
 };
 export default config;
