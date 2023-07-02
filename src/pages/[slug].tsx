@@ -1,5 +1,10 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
+import { PageLayout } from "~/components/layout";
+import { LoadingPage } from "~/components/loading";
+import { PostView } from "~/components/postView";
+import { generateSSHHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
 
 interface ProfilePageProps {
@@ -22,7 +27,6 @@ const ProfileFeed = ({ userId }: ProfilePageProps) => {
 };
 
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
-  console.log("🚀 ~ file: [slug].tsx:6 ~ username:", username);
   const { data } = api.profile.getUserByUsername.useQuery({
     username,
   });
@@ -55,27 +59,10 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   );
 };
 
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import Image from "next/image";
-import superjson from "superjson";
-import { PageLayout } from "~/components/layout";
-import { LoadingPage } from "~/components/loading";
-import { PostView } from "~/components/postVIew";
-import { appRouter } from "~/server/api/root";
-import { prisma } from "~/server/db";
-
 export const getStaticProps: GetStaticProps = async (context) => {
-  const helpers = createServerSideHelpers({
-    router: appRouter,
-    ctx: { prisma, userId: null },
-    transformer: superjson, // optional - adds superjson serialization
-  });
+  const helpers = generateSSHHelper();
 
   const slug = context.params?.slug;
-  console.log(
-    "🚀 ~ file: [slug].tsx:38 ~ constgetStaticProps:GetStaticProps= ~ slug:",
-    slug
-  );
 
   if (typeof slug !== "string") throw new Error("no slug");
 

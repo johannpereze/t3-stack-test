@@ -47,6 +47,23 @@ const ratelimit = new Ratelimit({
 });
 
 export const postsRouter = createTRPCRouter({
+  /* Create a procedure to get a songle post by id */
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const posts = await ctx.prisma.post.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      if (!posts)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Post not found" });
+      const postsWithUserData = await addUserDataToPosts([posts]);
+      const post = postsWithUserData[0];
+      return post;
+    }),
+
+  /* Create a procedure to get all the posts */
   getAll: publicProcedure.query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
       take: 100,
