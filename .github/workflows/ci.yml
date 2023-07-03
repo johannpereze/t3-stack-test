@@ -3,7 +3,11 @@ name: CI
 on: [push, pull_request]
 
 env:
-  DATABASE_URL: "https://fake.com"
+  DATABASE_URL: "secret"
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "secret"
+    CLERK_SECRET_KEY: "secret"
+    UPSTASH_REDIS_REST_URL: "secret"
+    UPSTASH_REDIS_REST_TOKEN: "secret"
 
 jobs:
   build:
