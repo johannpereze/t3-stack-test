@@ -1,4 +1,4 @@
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Image from "next/image";
 import { useState } from "react";
@@ -62,6 +62,7 @@ const CreatePostWizard = () => {
           <LoadingSpinner size={30} />
         </div>
       )}
+      <SignOutButton />
     </div>
   );
 };
