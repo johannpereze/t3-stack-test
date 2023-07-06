@@ -26,9 +26,10 @@ const ProfileFeed = ({ userId }: ProfilePageProps) => {
   );
 };
 
-const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
-  const { data } = api.profile.getUserByUsername.useQuery({
-    username,
+/* This email comes from getStaticProps */
+const ProfilePage: NextPage<{ email: string }> = ({ email }) => {
+  const { data } = api.profile.getUserByEmail.useQuery({
+    email,
   });
 
   if (!data) return <div>404</div>;
@@ -66,14 +67,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   if (typeof slug !== "string") throw new Error("no slug");
 
-  const username = slug.replace("@", "");
+  /* Only supports gmail users */
+  const email = `${slug.replace("@", "")}@gmail.com`;
 
-  await helpers.profile.getUserByUsername.prefetch({ username });
+  await helpers.profile.getUserByEmail.prefetch({ email: email });
 
   return {
     props: {
       trpcState: helpers.dehydrate(),
-      username,
+      email,
     },
   };
 };
