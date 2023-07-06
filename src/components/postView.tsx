@@ -3,6 +3,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import type { RouterOutputs } from "~/utils/api";
+import { LikeButton } from "./LikeButton";
 
 dayjs.extend(relativeTime);
 
@@ -32,6 +33,7 @@ export const PostView = ({ author, post }: PostWithUser) => {
         </div>
         <span className="text-2xl">{post.content}</span>
       </div>
+      <LikeButton filled />
     </div>
   );
 };
