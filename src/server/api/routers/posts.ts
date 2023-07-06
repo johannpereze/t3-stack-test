@@ -39,7 +39,7 @@ const addUserDataToPosts = async (posts: Post[]) => {
   });
 };
 
-// Create a new ratelimiter, that allows 3 requests per 1 minute
+// Create a new rate limiter, that allows 3 requests per 1 minute
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(3, "1 m"),
@@ -47,7 +47,7 @@ const ratelimit = new Ratelimit({
 });
 
 export const postsRouter = createTRPCRouter({
-  /* Create a procedure to get a songle post by id */
+  /* Create a procedure to get a single post by id */
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -74,7 +74,6 @@ export const postsRouter = createTRPCRouter({
   }),
 
   /* Create a procedure to get the posts of an user */
-
   getPostsByUserId: publicProcedure
     .input(
       z.object({
