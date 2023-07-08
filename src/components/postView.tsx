@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
@@ -10,6 +11,11 @@ dayjs.extend(relativeTime);
 type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 
 export const PostView = ({ author, post }: PostWithUser) => {
+  // get current authenticated user
+  const { user } = useUser();
+  const isLikedByCurrentUser = post.likes.some(
+    (like) => like.userId === user?.id
+  );
   return (
     <div className="flex gap-3 border-b border-slate-400 p-4" key={post.id}>
       <Image
@@ -33,7 +39,8 @@ export const PostView = ({ author, post }: PostWithUser) => {
         </div>
         <span className="text-2xl">{post.content}</span>
       </div>
-      <LikeButton filled />
+      <LikeButton filled={isLikedByCurrentUser} />
+      <span>{`${post.likes.length}`}</span>
     </div>
   );
 };
