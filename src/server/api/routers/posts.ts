@@ -1,5 +1,5 @@
 import { clerkClient } from "@clerk/nextjs";
-import type { Post } from "@prisma/client";
+import type { Like, Post } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
@@ -11,7 +11,11 @@ import {
 } from "~/server/api/trpc";
 import { filterUserForClient } from "~/server/helpers/filterUserForClient";
 
-const addUserDataToPosts = async (posts: Post[]) => {
+const addUserDataToPosts = async (
+  posts: (Post & {
+    likes: Like[];
+  })[]
+) => {
   //Using the Clerk API to get the user directly
   const users = (
     await clerkClient.users.getUserList({
@@ -55,6 +59,9 @@ export const postsRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        include: {
+          likes: true,
+        },
       });
       if (!posts)
         throw new TRPCError({ code: "NOT_FOUND", message: "Post not found" });
@@ -68,6 +75,9 @@ export const postsRouter = createTRPCRouter({
     const posts = await ctx.prisma.post.findMany({
       take: 100,
       orderBy: [{ createdAt: "desc" }],
+      include: {
+        likes: true,
+      },
     });
 
     return addUserDataToPosts(posts);
@@ -88,6 +98,9 @@ export const postsRouter = createTRPCRouter({
           },
           take: 100,
           orderBy: [{ createdAt: "desc" }],
+          include: {
+            likes: true,
+          },
         })
         .then(addUserDataToPosts)
     ),

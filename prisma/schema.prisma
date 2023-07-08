@@ -16,7 +16,20 @@ model Post {
   createdAt DateTime @default(now())
   content   String   @db.VarChar(255)
   authorId  String
+  likes     Like[]   @relation("PostLikes")
 
   // This makes the authorId field to be the index so its found faster
   @@index([authorId])
+}
+
+model Like {
+  id     String @id @default(cuid())
+  postId String
+  userId String
+
+  // Added relation field to Post model
+  post Post @relation("PostLikes", fields: [postId], references: [id])
+
+  @@unique([postId])
+  @@index([userId])
 }
