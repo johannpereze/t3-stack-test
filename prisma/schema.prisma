@@ -23,13 +23,15 @@ model Post {
 }
 
 model Like {
-  id     String @id @default(cuid())
-  postId String
-  userId String
+  // id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
 
   // Added relation field to Post model
+
   post Post @relation("PostLikes", fields: [postId], references: [id])
 
-  @@unique([postId])
-  @@index([userId])
+  @@unique([postId, userId])
+  @@index([postId])
 }
