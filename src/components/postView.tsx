@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 import { api, type RouterOutputs } from "~/utils/api";
 import { LikeButton } from "./LikeButton";
 
@@ -13,6 +14,8 @@ type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 export const PostView = ({ author, post }: PostWithUser) => {
   // get current authenticated user
   const { user } = useUser();
+  const ctx = api.useContext();
+
   const isLikedByCurrentUser = post.likes.some(
     (like) => like.userId === user?.id
   );
@@ -26,6 +29,25 @@ export const PostView = ({ author, post }: PostWithUser) => {
   if (likesData) {
     postLikes = likesData.filter((like) => userLikesIds.includes(like.id));
   }
+
+  const { mutate, isLoading: isPosting } = api.posts.like.useMutation({
+    onSuccess: () => {
+      void ctx.posts.getAll.invalidate();
+      void ctx.posts.getPostsByUserId.invalidate();
+    },
+    onError(err) {
+      const errorMessage = err.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Something went wrong");
+      }
+    },
+  });
+
+  const handleLike = (postId: string) => {
+    mutate({ postId, action: isLikedByCurrentUser ? "unlike" : "like" });
+  };
 
   return (
     <div className="flex gap-3 border-b border-slate-400 p-4" key={post.id}>
@@ -50,7 +72,9 @@ export const PostView = ({ author, post }: PostWithUser) => {
         </div>
         <span className="text-2xl">{post.content}</span>
       </div>
-      <LikeButton filled={isLikedByCurrentUser} />
+      <div onClick={() => handleLike(post.id)}>
+        <LikeButton filled={isLikedByCurrentUser} />
+      </div>
       <span>{`${post.likes.length}`}</span>
       <span>
         <ul>
