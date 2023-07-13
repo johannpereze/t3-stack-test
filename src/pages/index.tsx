@@ -5,7 +5,9 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
+import { ModeToggle } from "~/components/modeToggle";
 import { PostView } from "~/components/postView";
+import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 
 const CreatePostWizard = () => {
@@ -62,7 +64,10 @@ const CreatePostWizard = () => {
           <LoadingSpinner size={30} />
         </div>
       )}
-      <SignOutButton />
+      <Button variant="secondary" asChild>
+        <SignOutButton />
+      </Button>
+      <ModeToggle />
     </div>
   );
 };
