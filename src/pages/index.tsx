@@ -1,4 +1,3 @@
-import { useColorMode } from "@chakra-ui/react";
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Image from "next/image";
@@ -12,7 +11,6 @@ import { api } from "~/utils/api";
 const CreatePostWizard = () => {
   const { user } = useUser();
   const [input, setInput] = useState("");
-  const { colorMode, toggleColorMode } = useColorMode();
 
   const ctx = api.useContext();
 
@@ -65,9 +63,6 @@ const CreatePostWizard = () => {
         </div>
       )}
       <SignOutButton />
-      <div onClick={toggleColorMode}>
-        {colorMode === "light" ? <button>Light</button> : <button>Dark</button>}
-      </div>
     </div>
   );
 };
