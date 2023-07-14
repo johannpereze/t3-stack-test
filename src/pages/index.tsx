@@ -1,4 +1,4 @@
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Image from "next/image";
 import { useState } from "react";
@@ -91,11 +91,6 @@ const Home: NextPage = () => {
   return (
     <PageLayout>
       <div className="flex border-b border-slate-400 p-4">
-        {!isSignedIn && (
-          <div className="flex justify-center">
-            <SignInButton />
-          </div>
-        )}
         {isSignedIn && <CreatePostWizard />}
       </div>
       <Feed />
