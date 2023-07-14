@@ -62,20 +62,20 @@ export const PostView = ({ author, post }: PostWithUser) => {
                 />
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>
-              <div className="flex items-baseline gap-2">
+              <div className="flex flex-col items-baseline gap-2">
                 <CardTitle>{`@${author.username}`}</CardTitle>
-                <CardDescription>{`· ${dayjs(
+                <CardDescription>{`${dayjs(
                   post.createdAt
                 ).fromNow()}`}</CardDescription>
               </div>
             </div>
           </div>
           <h2 className="ml-20 text-3xl tracking-widest ">{post.content}</h2>
-          <div className="ml-20 mt-4 flex items-center gap-4">
+          <div className="ml-20 mt-4 flex items-center gap-3">
             <div onClick={() => handleLike(post.id)} className="cursor-pointer">
               <LikeButton filled={isLikedByCurrentUser} />
             </div>
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-widest">
+            <h4 className="scroll-m-20 text-base tracking-widest">
               {`${post.likes.length} Likes`}
             </h4>
           </div>
