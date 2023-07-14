@@ -1,11 +1,11 @@
 import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import Image from "next/image";
-import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { api, type RouterOutputs } from "~/utils/api";
 import { LikeButton } from "./LikeButton";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
 
 dayjs.extend(relativeTime);
 
@@ -50,8 +50,38 @@ export const PostView = ({ author, post }: PostWithUser) => {
   };
 
   return (
-    <div className="flex gap-3 p-4" key={post.id}>
-      <Image
+    <div className="flex flex-col gap-3 p-4" key={post.id}>
+      <Card>
+        <CardContent className="mt-6 grid gap-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Avatar>
+                <AvatarImage
+                  src={author.profileImageUrl}
+                  alt={`@${author.username}'s profile picture`}
+                />
+                <AvatarFallback>OM</AvatarFallback>
+              </Avatar>
+              <div className="flex items-baseline gap-2">
+                <CardTitle>{`@${author.username}`}</CardTitle>
+                <CardDescription>{`· ${dayjs(
+                  post.createdAt
+                ).fromNow()}`}</CardDescription>
+              </div>
+            </div>
+          </div>
+          <h2 className="ml-20 text-3xl tracking-widest ">{post.content}</h2>
+          <div className="ml-20 mt-4 flex items-center gap-4">
+            <div onClick={() => handleLike(post.id)} className="cursor-pointer">
+              <LikeButton filled={isLikedByCurrentUser} />
+            </div>
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-widest">
+              {`${post.likes.length} Likes`}
+            </h4>
+          </div>
+        </CardContent>
+      </Card>
+      {/* <Image
         src={author.profileImageUrl}
         alt={`@${author.username}'s profile picture`}
         className="h-14 w-14 rounded-full"
@@ -82,7 +112,7 @@ export const PostView = ({ author, post }: PostWithUser) => {
             <li key={like.id}>{like.username}</li>
           ))}
         </ul>
-      </span>
+      </span> */}
     </div>
   );
 };

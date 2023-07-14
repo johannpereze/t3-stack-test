@@ -7,7 +7,7 @@ export const LikeButton = ({ filled }: LikeButtonProps) => {
       {filled ? (
         <div>
           <svg
-            className="h-4 w-4 text-red-500"
+            className="h-6 w-6 text-red-500"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -19,7 +19,7 @@ export const LikeButton = ({ filled }: LikeButtonProps) => {
       ) : (
         <div>
           <svg
-            className="h-4 w-4 text-gray-800 dark:text-slate-400"
+            className="h-6 w-6 text-gray-800 dark:text-slate-400"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
