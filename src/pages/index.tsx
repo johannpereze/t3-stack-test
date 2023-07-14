@@ -1,13 +1,11 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
-import { ModeToggle } from "~/components/modeToggle";
 import { PostView } from "~/components/postView";
-import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 
 const CreatePostWizard = () => {
@@ -64,10 +62,6 @@ const CreatePostWizard = () => {
           <LoadingSpinner size={30} />
         </div>
       )}
-      <Button variant="secondary" asChild>
-        <SignOutButton />
-      </Button>
-      <ModeToggle />
     </div>
   );
 };
