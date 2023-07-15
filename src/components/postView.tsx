@@ -50,7 +50,7 @@ export const PostView = ({ author, post }: PostWithUser) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 p-4" key={post.id}>
+    <div className="flex flex-col p-4" key={post.id}>
       <Card>
         <CardContent className="mt-6 flex gap-4">
           <Avatar>
@@ -59,12 +59,12 @@ export const PostView = ({ author, post }: PostWithUser) => {
               alt={`@${author.username}'s profile picture`}
             />
           </Avatar>
-          <div className="flex flex-col">
-            <div className="flex items-baseline gap-2">
+          <div>
+            <div className="">
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
                 {`@${author.username}`}
               </h4>
-              <CardDescription>{`· ${dayjs(
+              <CardDescription>{`${dayjs(
                 post.createdAt
               ).fromNow()}`}</CardDescription>
             </div>
