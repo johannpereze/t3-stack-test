@@ -1,11 +1,13 @@
 import { useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
-import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { PostView } from "~/components/postView";
+import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
 import { api } from "~/utils/api";
 
 const CreatePostWizard = () => {
@@ -31,38 +33,41 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
   return (
-    <div className="flex w-full gap-3">
-      <Image
-        src={user.profileImageUrl}
-        alt="profile"
-        className="h-14 w-14 rounded-full"
-        width={56}
-        height={56}
-      />
-      <input
-        className="grow bg-transparent outline-none"
-        placeholder="Type some emojis!"
-        onChange={(e) => setInput(e.target.value)}
-        value={input}
-        type="text"
-        disabled={isPosting}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (input === "") return;
-            mutate({ content: input });
-          }
-        }}
-      />
-      {input !== "" && !isPosting && (
-        <button onClick={() => mutate({ content: input })}>Post</button>
-      )}
-      {isPosting && (
-        <div className="flex items-center justify-center">
-          <LoadingSpinner size={30} />
+    <Card className="w-full bg-secondary pt-6">
+      <CardContent>
+        <div className="flex w-full items-center gap-3">
+          <Avatar>
+            <AvatarImage
+              src={user.profileImageUrl}
+              alt={`@${user.username || ""}'s profile picture`}
+            />
+          </Avatar>
+          <input
+            className="grow bg-transparent outline-none"
+            placeholder="Type some emojis!"
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+            type="text"
+            disabled={isPosting}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                if (input === "") return;
+                mutate({ content: input });
+              }
+            }}
+          />
+          {input !== "" && !isPosting && (
+            <Button onClick={() => mutate({ content: input })}>Post</Button>
+          )}
+          {isPosting && (
+            <div className="flex items-center justify-center">
+              <LoadingSpinner size={30} />
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -90,9 +95,7 @@ const Home: NextPage = () => {
 
   return (
     <PageLayout>
-      <div className="flex border-b border-slate-400 p-4">
-        {isSignedIn && <CreatePostWizard />}
-      </div>
+      <div className="flex p-4">{isSignedIn && <CreatePostWizard />}</div>
       <Feed />
     </PageLayout>
   );
