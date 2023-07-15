@@ -52,7 +52,7 @@ export const PostView = ({ author, post }: PostWithUser) => {
   return (
     <div className="flex flex-col p-4" key={post.id}>
       <Card>
-        <CardContent className="mt-6 flex gap-4">
+        <CardContent className="flex gap-4 p-3">
           <Avatar>
             <AvatarImage
               src={author.profileImageUrl}

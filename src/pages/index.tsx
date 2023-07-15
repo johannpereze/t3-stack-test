@@ -33,8 +33,8 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
   return (
-    <Card className="w-full bg-secondary pt-6">
-      <CardContent>
+    <Card className="w-full bg-secondary">
+      <CardContent className="p-3">
         <div className="flex w-full items-center gap-3">
           <Avatar>
             <AvatarImage
@@ -43,7 +43,7 @@ const CreatePostWizard = () => {
             />
           </Avatar>
           <input
-            className="grow bg-transparent outline-none"
+            className="w-full bg-transparent outline-none"
             placeholder="Type some emojis!"
             onChange={(e) => setInput(e.target.value)}
             value={input}
@@ -56,10 +56,9 @@ const CreatePostWizard = () => {
                 mutate({ content: input });
               }
             }}
+            autoFocus
           />
-          {input !== "" && !isPosting && (
-            <Button onClick={() => mutate({ content: input })}>Post</Button>
-          )}
+          <Button onClick={() => mutate({ content: input })}>Post</Button>
           {isPosting && (
             <div className="flex items-center justify-center">
               <LoadingSpinner size={30} />
