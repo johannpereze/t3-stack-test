@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { api, type RouterOutputs } from "~/utils/api";
 import { LikeButton } from "./LikeButton";
+import { LoadingSpinner } from "./loading";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Card, CardContent, CardDescription } from "./ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
@@ -32,7 +33,7 @@ export const PostView = ({ author, post }: PostWithUser) => {
     postLikes = likesData.filter((like) => userLikesIds.includes(like.id));
   }
 
-  const { mutate, isLoading: isPosting } = api.posts.like.useMutation({
+  const { mutate, isLoading: isLikeLoading } = api.posts.like.useMutation({
     onSuccess: () => {
       void ctx.posts.getAll.invalidate();
       void ctx.posts.getPostsByUserId.invalidate();
@@ -85,7 +86,11 @@ export const PostView = ({ author, post }: PostWithUser) => {
                 onClick={() => handleLike(post.id)}
                 className="cursor-pointer"
               >
-                <LikeButton filled={isLikedByCurrentUser} />
+                {isLikeLoading ? (
+                  <LoadingSpinner size={24} />
+                ) : (
+                  <LikeButton filled={isLikedByCurrentUser} />
+                )}
               </div>
               <Popover>
                 <PopoverTrigger disabled={!post.likes.length}>
