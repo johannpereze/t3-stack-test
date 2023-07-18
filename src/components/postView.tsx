@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { api, type RouterOutputs } from "~/utils/api";
 import { LikeButton } from "./LikeButton";
@@ -53,20 +54,26 @@ export const PostView = ({ author, post }: PostWithUser) => {
     <div className="flex flex-col p-4" key={post.id}>
       <Card>
         <CardContent className="flex gap-4 p-3">
-          <Avatar>
-            <AvatarImage
-              src={author.profileImageUrl}
-              alt={`@${author.username}'s profile picture`}
-            />
-          </Avatar>
+          <Link href={`/@${author.username}`}>
+            <Avatar>
+              <AvatarImage
+                src={author.profileImageUrl}
+                alt={`@${author.username}'s profile picture`}
+              />
+            </Avatar>
+          </Link>
           <div>
-            <div className="">
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                {`@${author.username}`}
-              </h4>
-              <CardDescription>{`${dayjs(
-                post.createdAt
-              ).fromNow()}`}</CardDescription>
+            <div>
+              <Link href={`/@${author.username}`}>
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                  {`@${author.username}`}
+                </h4>
+              </Link>
+              <Link href={`/post/${post.id}`}>
+                <CardDescription>{`${dayjs(
+                  post.createdAt
+                ).fromNow()}`}</CardDescription>
+              </Link>
             </div>
             <h3 className="mt-2 scroll-m-20 text-2xl font-semibold tracking-tight">
               {post.content}

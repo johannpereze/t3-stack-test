@@ -1,4 +1,5 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import Link from "next/link";
 import { type PropsWithChildren } from "react";
 import { ThemeProvider } from "./ThemeProvider";
 import { ModeToggle } from "./modeToggle";
@@ -14,13 +15,15 @@ export const PageLayout = (props: PropsWithChildren) => {
       <header className="fixed  left-0 right-0 top-0 z-10 flex justify-center bg-background px-4">
         <div className="flex h-20 w-full max-w-2xl items-center justify-between ">
           <div>
-            <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-5xl">
-              trinom
-              <span className="text-xl font-extrabold tracking-tight lg:text-4xl">
-                🙃
-              </span>
-              ji
-            </h1>
+            <Link href="/">
+              <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-5xl">
+                trinom
+                <span className="text-xl font-extrabold tracking-tight lg:text-4xl">
+                  🙃
+                </span>
+                ji
+              </h1>
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <ModeToggle />
