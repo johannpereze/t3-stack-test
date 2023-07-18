@@ -2,7 +2,7 @@ import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { PageLayout } from "~/components/layout";
-import { LoadingPage } from "~/components/loading";
+import { LoadingPosts } from "~/components/loading";
 import { PostView } from "~/components/postView";
 import { generateSSHHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
@@ -13,7 +13,12 @@ interface ProfilePageProps {
 const ProfileFeed = ({ userId }: ProfilePageProps) => {
   const { data, isLoading } = api.posts.getPostsByUserId.useQuery({ userId });
 
-  if (isLoading) return <LoadingPage />;
+  if (isLoading)
+    return (
+      <div className="mt-4">
+        <LoadingPosts />
+      </div>
+    );
 
   if (!data || data.length === 0) return <div>User has not posted</div>;
 

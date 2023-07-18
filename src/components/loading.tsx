@@ -1,3 +1,5 @@
+import { SkeletonPost } from "./ui/skeleton-post";
+
 interface LoadingSpinnerProps {
   size?: number;
 }
@@ -32,6 +34,16 @@ export const LoadingPage = () => {
   return (
     <div className="absolute right-0 top-0 flex h-screen w-screen items-center justify-center">
       <LoadingSpinner size={50} />
+    </div>
+  );
+};
+
+export const LoadingPosts = () => {
+  return (
+    <div className="mx-4 flex flex-col gap-4">
+      <SkeletonPost />
+      <SkeletonPost />
+      <SkeletonPost />
     </div>
   );
 };
