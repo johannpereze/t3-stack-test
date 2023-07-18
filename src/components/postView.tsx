@@ -47,6 +47,7 @@ export const PostView = ({ author, post }: PostWithUser) => {
   });
 
   const handleLike = (postId: string) => {
+    if (!user) return;
     mutate({ postId, action: isLikedByCurrentUser ? "unlike" : "like" });
   };
 
