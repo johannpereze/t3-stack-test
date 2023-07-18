@@ -7,6 +7,7 @@ import { api, type RouterOutputs } from "~/utils/api";
 import { LikeButton } from "./LikeButton";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Card, CardContent, CardDescription } from "./ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 dayjs.extend(relativeTime);
 
@@ -86,45 +87,36 @@ export const PostView = ({ author, post }: PostWithUser) => {
               >
                 <LikeButton filled={isLikedByCurrentUser} />
               </div>
-              <h4 className="scroll-m-20 text-base tracking-widest">
-                {`${post.likes.length} Likes`}
-              </h4>
+              <Popover>
+                <PopoverTrigger disabled={!post.likes.length}>
+                  <h4 className="scroll-m-20 text-base tracking-widest">
+                    {`${post.likes.length} Likes`}
+                  </h4>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <ul>
+                    {postLikes.map(({ username, profileImageUrl, id }) => (
+                      <li key={id}>
+                        <div className="flex items-center gap-2">
+                          <Avatar size={5}>
+                            <AvatarImage
+                              src={profileImageUrl}
+                              alt={`@${username || ""}'s profile picture`}
+                            />
+                          </Avatar>
+                          <Link href={`/@${username || ""}`}>
+                            <p className="leading-8">@{username}</p>
+                          </Link>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </CardContent>
       </Card>
-      {/* <Image
-        src={author.profileImageUrl}
-        alt={`@${author.username}'s profile picture`}
-        className="h-14 w-14 rounded-full"
-        width={56}
-        height={56}
-      />
-      <div className="flex flex-col">
-        <div className="flex text-slate-300">
-          <Link href={`/@${author.username}`}>
-            <span>{`@${author.username}`}</span>
-          </Link>
-          <Link href={`/post/${post.id}`}>
-            <span className="font-thin">
-              {" "}
-              · {`${dayjs(post.createdAt).fromNow()}`}
-            </span>
-          </Link>
-        </div>
-        <span className="text-2xl">{post.content}</span>
-      </div>
-      <div onClick={() => handleLike(post.id)}>
-        <LikeButton filled={isLikedByCurrentUser} />
-      </div>
-      <span>{`${post.likes.length}`}</span>
-      <span>
-        <ul>
-          {postLikes?.map((like) => (
-            <li key={like.id}>{like.username}</li>
-          ))}
-        </ul>
-      </span> */}
     </div>
   );
 };
