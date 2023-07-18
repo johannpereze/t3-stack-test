@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { type NextPage } from "next";
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
@@ -10,6 +11,7 @@ import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { api } from "~/utils/api";
+import { getUsernameFromEmail } from "~/utils/misc";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -37,12 +39,20 @@ const CreatePostWizard = () => {
     <Card className="w-full bg-secondary">
       <CardContent className="p-3">
         <div className="flex w-full items-center gap-3">
-          <Avatar>
-            <AvatarImage
-              src={user.profileImageUrl}
-              alt={`@${user.username || ""}'s profile picture`}
-            />
-          </Avatar>
+          <Link
+            href={`/@${
+              getUsernameFromEmail(
+                String(user.emailAddresses[0]?.emailAddress)
+              ) || ""
+            }`}
+          >
+            <Avatar>
+              <AvatarImage
+                src={user.profileImageUrl}
+                alt={`@${user.username || ""}'s profile picture`}
+              />
+            </Avatar>
+          </Link>
           <input
             className="w-full bg-transparent outline-none"
             placeholder="Type some emojis!"
