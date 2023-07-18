@@ -4,11 +4,11 @@ import { type NextPage } from "next";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
-import { LoadingPage } from "~/components/loading";
 import { PostView } from "~/components/postView";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
+import { SkeletonPost } from "~/components/ui/skeleton-post";
 import { api } from "~/utils/api";
 
 const CreatePostWizard = () => {
@@ -72,9 +72,19 @@ const CreatePostWizard = () => {
   );
 };
 
+const LoadingPosts = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <SkeletonPost />
+      <SkeletonPost />
+      <SkeletonPost />
+    </div>
+  );
+};
+
 const Feed = () => {
   const { data, isLoading: postLoading } = api.posts.getAll.useQuery();
-  if (postLoading) return <LoadingPage />;
+  if (postLoading) return <LoadingPosts />;
   if (!data) return <div>Something went wrong</div>;
   return (
     <div className="flex flex-col">
