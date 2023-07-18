@@ -1,9 +1,10 @@
 import { useUser } from "@clerk/nextjs";
+import { Loader2 } from "lucide-react";
 import { type NextPage } from "next";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { PageLayout } from "~/components/layout";
-import { LoadingPage, LoadingSpinner } from "~/components/loading";
+import { LoadingPage } from "~/components/loading";
 import { PostView } from "~/components/postView";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
@@ -58,12 +59,13 @@ const CreatePostWizard = () => {
             }}
             autoFocus
           />
-          <Button onClick={() => mutate({ content: input })}>Post</Button>
-          {isPosting && (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner size={30} />
-            </div>
-          )}
+          <Button
+            disabled={!input || isPosting}
+            onClick={() => mutate({ content: input })}
+          >
+            {isPosting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isPosting ? "Posting" : "Post"}
+          </Button>
         </div>
       </CardContent>
     </Card>
